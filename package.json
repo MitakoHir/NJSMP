@@ -1,0 +1,11 @@
+{
+  "name": "NJSMP",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MitakoHir/NJSMP.git",
+  "author": "Iurii Topychkanov <Iurii_Topychkanov@epam.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.0"
+  }
+}
