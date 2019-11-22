@@ -7,5 +7,8 @@
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.0"
+  },
+  "scripts": {
+    "task1": "nodemon ./src/app/index.js"
   }
 }
