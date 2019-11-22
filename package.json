@@ -5,10 +5,14 @@
   "repository": "https://github.com/MitakoHir/NJSMP.git",
   "author": "Iurii Topychkanov <Iurii_Topychkanov@epam.com>",
   "license": "MIT",
+  "scripts": {
+    "task1": "nodemon ./src/app/task1/index.js",
+    "task2": "nodemon ./src/app/task2/index.js"
+  },
   "devDependencies": {
     "nodemon": "^2.0.0"
   },
-  "scripts": {
-    "task1": "nodemon ./src/app/index.js"
+  "dependencies": {
+    "csvtojson": "^2.0.10"
   }
 }
