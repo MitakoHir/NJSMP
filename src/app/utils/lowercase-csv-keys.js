@@ -7,7 +7,9 @@ module.exports = new Transform({
         try {
             const transformedChunk = {};
             const parsedChunk = JSON.parse(this.stringDecoder.write(chunk));
+            
             Object.keys(parsedChunk).forEach(key => transformedChunk[key.toLowerCase()] = parsedChunk[key]);
+            
             this.push(JSON.stringify(transformedChunk) + '\n');
             callback();   
         } catch (e) {
