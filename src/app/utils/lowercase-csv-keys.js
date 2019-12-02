@@ -1,8 +1,8 @@
-const { Transform } = require('stream');
-const StringDecoder = require('string_decoder').StringDecoder;
+import { Transform } from "stream";
+import { StringDecoder } from "string_decoder";
 
-module.exports = new Transform({
-    transform(chunk, encoding, callback) {
+export default  new Transform({
+    transform(chunk, encoding, next) {
         if (!this.stringDecoder) this.stringDecoder = new StringDecoder('utf-8');
         try {
             const transformedChunk = {};
@@ -11,7 +11,7 @@ module.exports = new Transform({
             Object.keys(parsedChunk).forEach(key => transformedChunk[key.toLowerCase()] = parsedChunk[key]);
             
             this.push(JSON.stringify(transformedChunk) + '\n');
-            callback();   
+            next();   
         } catch (e) {
             console.error(e);
         }

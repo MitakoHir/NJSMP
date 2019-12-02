@@ -1,16 +1,19 @@
-const path = require('path');
-const csv = require('csvtojson');
-const fs = require('fs');
-const rootPath = path.resolve();
-const transformKeysToLowerCase = require(`${path.resolve()}/src/app/utils/lowercase-csv-keys.js`);
+import  path from 'path';
+import csv from "csvtojson";
+import fs from "fs";
+import transformKeysToLowerCase from '../utils/lowercase-csv-keys';
 
-const pathToCsvFile = rootPath + '/src/assets/node_mentoring_t1_2_input_example.csv';
-const pathToTxtFile = rootPath + '/src/assets/output.txt';
+(function main() {
+    const rootPath = path.resolve();
 
-async function main() {
-    const readStream = fs.createReadStream(pathToCsvFile);
-    const writeStream = fs.createWriteStream(pathToTxtFile);
-    await readStream.pipe(csv()).pipe(transformKeysToLowerCase).pipe(writeStream);
-}
+    const pathToCsvFile = rootPath + '/src/assets/node_mentoring_t1_2_input_example.csv';
+    const pathToTxtFile = rootPath + '/src/assets/output.txt';
+    
+    async function convertCsvToJson() {
+        const readStream = fs.createReadStream(pathToCsvFile);
+        const writeStream = fs.createWriteStream(pathToTxtFile);
+        await readStream.pipe(csv()).pipe(transformKeysToLowerCase).pipe(writeStream);
+    }
 
-main().catch(err => console.error(err));
+    convertCsvToJson().catch(err => console.error(err));
+})();

@@ -6,10 +6,12 @@
   "author": "Iurii Topychkanov <Iurii_Topychkanov@epam.com>",
   "license": "MIT",
   "scripts": {
-    "task1": "nodemon ./src/app/task1/index.js",
-    "task2": "nodemon ./src/app/task2/index.js"
+    "task1": "nodemon --exec babel-node ./src/app/task1/index.js",
+    "task2": "nodemon --exec babel-node ./src/app/task2/index.js"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "nodemon": "^2.0.0"
   },
   "dependencies": {
