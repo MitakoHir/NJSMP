@@ -1,4 +1,4 @@
-import  path from 'path';
+import path from 'path';
 import csv from "csvtojson";
 import fs from "fs";
 import transformKeysToLowerCase from '../utils/lowercase-csv-keys';
@@ -8,11 +8,11 @@ import transformKeysToLowerCase from '../utils/lowercase-csv-keys';
 
     const pathToCsvFile = rootPath + '/src/assets/node_mentoring_t1_2_input_example.csv';
     const pathToTxtFile = rootPath + '/src/assets/output.txt';
-    
+
     const parserParams = {
         ignoreColumns: /Amount/
     };
-    
+
     async function convertCsvToJson() {
         const readStream = fs.createReadStream(pathToCsvFile);
         const writeStream = fs.createWriteStream(pathToTxtFile);

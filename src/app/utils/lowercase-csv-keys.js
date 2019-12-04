@@ -7,11 +7,11 @@ export default new Transform({
         try {
             const transformedChunk = {};
             const parsedChunk = JSON.parse(this.stringDecoder.write(chunk));
-            
-            Object.keys(parsedChunk).forEach(key => transformedChunk[key.toLowerCase()] = parsedChunk[key]);
-            
+
+            Object.keys(parsedChunk).forEach(key => transformedChunk[ key.toLowerCase() ] = parsedChunk[ key ]);
+
             this.push(JSON.stringify(transformedChunk) + '\n');
-            next();   
+            next();
         } catch (e) {
             console.error(e);
         }
