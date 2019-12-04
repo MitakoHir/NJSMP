@@ -1,7 +1,7 @@
 import { Transform } from "stream";
 import { StringDecoder } from "string_decoder";
 
-export default  new Transform({
+export default new Transform({
     transform(chunk, encoding, next) {
         if (!this.stringDecoder) this.stringDecoder = new StringDecoder('utf-8');
         try {

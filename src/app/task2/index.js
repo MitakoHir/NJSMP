@@ -9,10 +9,14 @@ import transformKeysToLowerCase from '../utils/lowercase-csv-keys';
     const pathToCsvFile = rootPath + '/src/assets/node_mentoring_t1_2_input_example.csv';
     const pathToTxtFile = rootPath + '/src/assets/output.txt';
     
+    const parserParams = {
+        ignoreColumns: /Amount/
+    };
+    
     async function convertCsvToJson() {
         const readStream = fs.createReadStream(pathToCsvFile);
         const writeStream = fs.createWriteStream(pathToTxtFile);
-        await readStream.pipe(csv()).pipe(transformKeysToLowerCase).pipe(writeStream);
+        await readStream.pipe(csv(parserParams)).pipe(transformKeysToLowerCase).pipe(writeStream);
     }
 
     convertCsvToJson().catch(err => console.error(err));
