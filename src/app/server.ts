@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 
 class ExpressServer extends Server {
 
-    private readonly SERVER_STARTED = 'Example server started on port: ';
+    private readonly SERVER_STARTED = 'Express server started on port: ';
 
     constructor() {
         super(true);

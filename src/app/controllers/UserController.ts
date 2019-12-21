@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
+import { Controller, Get, Put, Post } from '@overnightjs/core';
 import { UserCollection } from '../storage/UserCollection';
 import { UserUtils } from '../utils/UserUtils';
 
