@@ -17,6 +17,7 @@
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
+    "interface-name": [true, "never-prefix"],
     "quotemark": [
       true,
       "single"

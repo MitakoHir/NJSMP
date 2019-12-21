@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "removeComments": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -22,6 +22,10 @@
       "*": [
         "node_modules/*"
       ]
+//      "@utils/*": ["src/app/utils/*"],
+//      "@project-types/*": ["src/app/types/*"],
+//      "@controllers/*": ["src/app/controllers/*"],
+//      "@storage/*": ["src/app/storage/*"]
     }
   },
   "include": [
