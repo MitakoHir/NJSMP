@@ -22,10 +22,6 @@
       "*": [
         "node_modules/*"
       ]
-//      "@utils/*": ["src/app/utils/*"],
-//      "@project-types/*": ["src/app/types/*"],
-//      "@controllers/*": ["src/app/controllers/*"],
-//      "@storage/*": ["src/app/storage/*"]
     }
   },
   "include": [

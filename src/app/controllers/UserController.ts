@@ -42,17 +42,4 @@ export class UserController {
             res.status(200).json({message: 'User successfully added', user: tempUser}) :
             res.status(400).json({error: `User with login ${req.body.login} already exists`});
     }
-
-    //
-    // @Delete(':msg')
-    // private delMessage(req: Request, res: Response) {
-    //     try {
-    //         throw new Error(req.params.msg);
-    //     } catch (err) {
-    //         Logger.Err(err, true);
-    //         return res.status(400).json({
-    //             error: req.params.msg,
-    //         });
-    //     }
-    // }
 }
