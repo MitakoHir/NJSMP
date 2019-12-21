@@ -1,4 +1,5 @@
 import { User, UsersCollection } from '../types/User';
+import { UserUtils } from '../utils/UserUtils';
 
 export class UserCollection implements UsersCollection {
     private readonly _users: User[];
@@ -22,7 +23,7 @@ export class UserCollection implements UsersCollection {
 
     public getUserByLogin(login: string): { index: number, data: User } {
         const userIndex = this._users.findIndex((user) => user.login === login);
-        return { index: userIndex, data: this._users[userIndex]};
+        return {index: userIndex, data: this._users[userIndex]};
     }
 
     public updateUser(index: number, user: User): User {
@@ -32,11 +33,13 @@ export class UserCollection implements UsersCollection {
 
     public softDeleteUser(id: string): boolean {
         const index = this._users.findIndex((user) => user.id === id);
-        this.updateUser(index, { ...this._users[index], isDeleted: true});
+        this.updateUser(index, {...this._users[index], isDeleted: true});
         return index !== -1;
     }
 
     public getAutoSuggestUsers(loginSubstring: string, limit: number): User[] {
-        return [];
+        return this._users
+            .filter((user) => user.login.includes(loginSubstring))
+            .sort(UserUtils.compareLogins).slice(0, limit);
     }
 }
