@@ -17,8 +17,6 @@
     "@types/hapi__joi": "^16.0.4",
     "@types/node": "^12.12.21",
     "@types/uuid": "^3.4.6",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "nodemon": "^2.0.0",
     "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
