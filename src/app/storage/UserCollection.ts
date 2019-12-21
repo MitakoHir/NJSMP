@@ -1,4 +1,4 @@
-import { User, UserData, UsersCollection } from '../types/User';
+import { User, UsersCollection } from '../types/User';
 
 export class UserCollection implements UsersCollection {
     private readonly _users: User[];
@@ -28,6 +28,12 @@ export class UserCollection implements UsersCollection {
     public updateUser(index: number, user: User): User {
         this._users[index] = user;
         return this._users[index];
+    }
+
+    public softDeleteUser(id: string): boolean {
+        const index = this._users.findIndex((user) => user.id === id);
+        this.updateUser(index, { ...this._users[index], isDeleted: true});
+        return index !== -1;
     }
 
     public getAutoSuggestUsers(loginSubstring: string, limit: number): User[] {
