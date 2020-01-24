@@ -11,7 +11,7 @@ export interface User extends UserData {
     isDeleted: boolean;
 }
 
-export interface UsersCollection {
+export interface UsersService {
     getUserById(id: string): User;
     addUser(user: User): boolean;
     getAutoSuggestUsers(loginSubstring: string, limit: number): User[];

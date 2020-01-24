@@ -1,7 +1,7 @@
-import { User, UsersCollection } from '../types/User';
+import { User, UsersService } from '../types/User';
 import { UserUtils } from '../utils/UserUtils';
 
-export class UserCollection implements UsersCollection {
+export class UserService implements UsersService {
     private readonly _users: User[];
 
     constructor() {

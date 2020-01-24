@@ -3,6 +3,7 @@ import * as controllers from './controllers';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
+import DatabaseModule from './modules/Database';
 
 class ExpressServer extends Server {
 
@@ -11,7 +12,7 @@ class ExpressServer extends Server {
     constructor() {
         super(true);
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(bodyParser.urlencoded({extended: true}));
         this.setupControllers();
     }
 
@@ -33,6 +34,7 @@ class ExpressServer extends Server {
         this.app.listen(port, () => {
             Logger.Imp(this.SERVER_STARTED + port);
         });
+        DatabaseModule.testConnection();
     }
 }
 

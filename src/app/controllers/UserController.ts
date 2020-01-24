@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Put, Post, Delete, Middleware } from '@overnightjs/core';
-import { UserCollection } from '../storage/UserCollection';
+import { UserService } from '../services/UserService';
 import { UserUtils } from '../utils/UserUtils';
 import { userValidator } from '../validators/UserValidators';
 import { ValidatedRequest } from 'express-joi-validation';
@@ -9,7 +9,7 @@ import { UserRequestScheme } from '../types/User';
 
 @Controller('api/user')
 export class UserController {
-    private usersCollection: UserCollection = new UserCollection();
+    private usersCollection: UserService = new UserService();
 
     @Get(':id')
     private getUserById(req: Request, res: Response) {
