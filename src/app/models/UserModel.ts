@@ -1,25 +1,39 @@
 import DatabaseModule from '../modules/Database';
-import Sequelize from 'sequelize';
-import { Model } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 
 const dbCon = DatabaseModule.getConnection();
 
-export class UserModel extends Model {}
+export class UserModel extends Model {
+    public id!: number;
+    public login!: string;
+    public password!: string;
+    public age!: number;
+    public isDeleted!: boolean;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+}
 UserModel.init({
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     login: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
     },
     password: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     },
     age: {
-        type: Sequelize.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     isDeleted: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
 }, {

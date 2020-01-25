@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "prestart": "yarn build",
+    "prestart": "yarn build && node ./dist/utils/UsersGenerator.js",
     "start": "node .",
     "start-dev": "nodemon --config \"./nodemon.json\"/"
   },

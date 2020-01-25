@@ -1,17 +1,40 @@
-import { UserData, User } from '../types/User';
-import { v4 as uuid } from 'uuid';
+import { User } from '../types/User';
+import { UserDAO } from '../data-access/UserDAO';
+import { Logger } from '@overnightjs/logger';
+import { UserModel } from '../models/UserModel';
+
+const predefinedUsers: User[] = [
+    {
+        login: 'testUser',
+        password: '123456a',
+        age: 22,
+        isDeleted: false,
+    },
+    {
+        login: 'testUser1',
+        password: '123456b',
+        age: 24,
+        isDeleted: false,
+    },
+    {
+        login: 'testUser3',
+        password: '123456c',
+        age: 26,
+        isDeleted: false,
+    },
+];
 
 export class UserUtils {
-    public static create(userData: UserData): User {
-        return {id: uuid(), isDeleted: false, ...userData};
-    }
-
-    public static compareLogins(prevUser: User, nextUser: User): number {
-        if (prevUser.login > nextUser.login) {
-            return 1;
-        } else if (prevUser.login < nextUser.login) {
-            return -1;
-        }
-        return 0;
+    public static generateUsers() {
+        UserModel.sync().then(() => {
+            const users = predefinedUsers.map((user) => UserDAO.create(user));
+            Promise.all(users)
+                .then((userModels) => {
+                    Logger.Imp(`${userModels.length} predefined users were added to the database`);
+                })
+                .catch((err: Error) => {
+                    Logger.Imp(`The was a problem while adding predefined users to the database: ${err.message}`);
+                });
+        });
     }
 }

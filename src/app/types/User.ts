@@ -5,16 +5,8 @@ export interface UserData {
     password: string;
     age: number;
 }
-
 export interface User extends UserData {
-    readonly id: string;
     isDeleted: boolean;
-}
-
-export interface UsersService {
-    getUserById(id: string): User;
-    addUser(user: User): boolean;
-    getAutoSuggestUsers(loginSubstring: string, limit: number): User[];
 }
 
 export interface UserRequestScheme extends ValidatedRequestSchema {
