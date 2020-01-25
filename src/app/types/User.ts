@@ -1,4 +1,5 @@
 import { ContainerTypes, ValidatedRequestSchema } from 'express-joi-validation';
+import { UserModel } from '../models/UserModel';
 
 export interface UserData {
     login: string;
@@ -8,6 +9,8 @@ export interface UserData {
 export interface User extends UserData {
     isDeleted: boolean;
 }
+
+export type UserServiceResponse = UserModel | UserModel[];
 
 export interface UserRequestScheme extends ValidatedRequestSchema {
     [ContainerTypes.Body]: UserData;

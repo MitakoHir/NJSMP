@@ -1,5 +1,6 @@
 import { UserModel } from '../models/UserModel';
 import { User } from '../types/User';
+import { Op } from 'sequelize';
 
 export class UserDAO {
     public static async create(user: User): Promise<UserModel> {
@@ -22,5 +23,12 @@ export class UserDAO {
 
     public static async findByLogin(login: string): Promise<UserModel> {
         return UserModel.findOne({where: {login}});
+    }
+
+    public static async findByLoginSubstring(
+        loginSubstring: string,
+        limit: number,
+    ): Promise<UserModel[]> {
+        return UserModel.findAll({where: {id: {[Op.contains]: [loginSubstring]}}, limit});
     }
 }
