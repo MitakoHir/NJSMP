@@ -9,12 +9,11 @@ import { UserRequestScheme } from '../types/User';
 
 @Controller('api/user')
 export class UserController {
-    private usersCollection: UserService = new UserService();
 
     @Get(':id')
     private getUserById(req: Request, res: Response) {
         const {id} = req.params;
-        const user = this.usersCollection.getUserById(id);
+        const user = UserService.getUserById(id);
         return user ?
             res.status(200).json({user}) :
             res.status(404).json({error: `User with id: ${id} not found`});
@@ -23,7 +22,7 @@ export class UserController {
     @Get('suggestions/:loginSubstring/:limit')
     private getSuggestedUsers(req: Request, res: Response) {
         const {loginSubstring, limit} = req.params;
-        const suggestedUsers = this.usersCollection.getAutoSuggestUsers(loginSubstring, +limit);
+        const suggestedUsers = UserService.getAutoSuggestUsers(loginSubstring, Number(limit));
         return suggestedUsers.length ?
             res.status(200).json({limit, users: suggestedUsers}) :
             res.status(404).json(
@@ -35,35 +34,36 @@ export class UserController {
     @Middleware([userValidator])
     private updateUser(req: ValidatedRequest<UserRequestScheme>, res: Response) {
         const {login} = req.body;
-        const user = this.usersCollection.getUserByLogin(login);
-        if (user.index !== -1) {
+        const user = UserService.getUserByLogin(login);
+        if (user) {
             return res.status(200).json(
                 {
-                    message: `User with login: ${user.data.login} was successfully updated`,
-                    user: this.usersCollection.updateUser(user.index, {...user.data, ...req.body}),
+                    message: `User with login: ${user.login} was successfully updated`,
+                    user: UserService.updateUser({...user, ...req.body}),
                 });
         } else {
-            const tempUser = UserUtils.create(req.body);
-            this.usersCollection.addUser(tempUser);
+            // const tempUser = UserUtils.create(req.body);
+            // this.userService.addUser(tempUser);
 
-            return res.status(201).json({message: 'User successfully added', user: tempUser});
+            // return res.status(201).json({message: 'User successfully added', user: tempUser});
         }
     }
 
     @Post()
     @Middleware([userValidator])
     private addUser(req: ValidatedRequest<UserRequestScheme>, res: Response) {
-        const tempUser = UserUtils.create(req.body);
-        const userAdded = this.usersCollection.addUser(tempUser);
-        return userAdded ?
-            res.status(200).json({message: 'User successfully added', user: tempUser}) :
-            res.status(400).json({error: `User with login ${req.body.login} already exists`});
+        return ;
+        // const tempUser = UserUtils.create(req.body);
+        // const userAdded = this.userService.addUser(tempUser);
+        // return userAdded ?
+        //     res.status(200).json({message: 'User successfully added', user: tempUser}) :
+        //     res.status(400).json({error: `User with login ${req.body.login} already exists`});
     }
 
     @Delete(':id')
     private deleteUser(req: Request, res: Response) {
         const {id} = req.params;
-        const deleted = this.usersCollection.softDeleteUser(id);
+        const deleted = UserService.softDeleteUser(Number(id));
         return deleted ?
             res.status(202).json({message: `User with id: ${id} was successfully deleted`}) :
             res.status(404).json({error: `User with id: ${id} wasn't found`});

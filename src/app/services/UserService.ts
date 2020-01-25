@@ -1,45 +1,29 @@
-import { User, UsersService } from '../types/User';
-import { UserUtils } from '../utils/UserUtils';
+import { UserData } from '../types/User';
+import { UserModel } from '../models/UserModel';
 
-export class UserService implements UsersService {
-    private readonly _users: User[];
+export class UserService {
 
-    constructor() {
-        this._users = [];
+    public static getUserById(id: string): UserModel {
+        return;
     }
 
-    public getUserById(id: string): User {
-        return this._users.find((user) => user.id === id);
+    public static getUserByLogin(login: string): UserModel {
+        return;
     }
 
-    public addUser(user: User): boolean {
-        const userNotExists = !(this._users.find(({login}) => login === user.login) !== undefined);
-
-        if (userNotExists) {
-            this._users.push(user);
-        }
-        return userNotExists;
+    public static addUser(user: UserData): UserModel {
+        return;
     }
 
-    public getUserByLogin(login: string): { index: number, data: User } {
-        const userIndex = this._users.findIndex((user) => user.login === login);
-        return {index: userIndex, data: this._users[userIndex]};
+    public static updateUser(user: UserData): UserModel {
+        return;
     }
 
-    public updateUser(index: number, user: User): User {
-        this._users[index] = user;
-        return this._users[index];
+    public static softDeleteUser(id: number): UserModel | null {
+        return;
     }
 
-    public softDeleteUser(id: string): boolean {
-        const index = this._users.findIndex((user) => user.id === id);
-        this.updateUser(index, {...this._users[index], isDeleted: true});
-        return index !== -1;
-    }
-
-    public getAutoSuggestUsers(loginSubstring: string, limit: number): User[] {
-        return this._users
-            .filter((user) => user.login.includes(loginSubstring))
-            .sort(UserUtils.compareLogins).slice(0, limit);
+    public static getAutoSuggestUsers(loginSubstring: string, limit: number): UserModel[] {
+        return;
     }
 }
