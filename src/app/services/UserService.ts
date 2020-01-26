@@ -22,7 +22,7 @@ export class UserService {
     public static async updateUser(user: UserData): Promise<UserServiceResponse> {
         try {
             const userRecord = await UserDAO.findByLogin(user.login);
-            return await UserDAO.update({...userRecord, ...user});
+            return await UserDAO.update(userRecord, user);
         } catch (e) {
             throw Error(`The error occurred while updating user: ${e.message}`);
         }
@@ -30,7 +30,8 @@ export class UserService {
 
     public static async softDeleteUser(id: number): Promise<UserServiceResponse> {
         try {
-            return await UserDAO.softDelete(id);
+            const userRecord = await UserDAO.findById(id);
+            return await UserDAO.softDelete(userRecord);
         } catch (e) {
             throw Error(`The error occurred while deleting user: ${e.message}`);
         }

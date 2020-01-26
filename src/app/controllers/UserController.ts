@@ -4,6 +4,7 @@ import { UserService } from '../services/UserService';
 import { userValidator } from '../validators/UserValidators';
 import { ValidatedRequest } from 'express-joi-validation';
 import { UserRequestScheme } from '../types/User';
+import { UserModel } from '../models/UserModel';
 
 
 @Controller('api/user')
@@ -28,14 +29,12 @@ export class UserController {
         const {loginSubstring, limit} = req.params;
         const suggestedUsers = await UserService.getAutoSuggestUsers(loginSubstring, Number(limit))
             .catch((e) => {
-                res.status(400)
-                    .json({
-                        error: `Error occurred while getting
-                        users by login substring: ${e.message}`,
-                    });
+                res.status(400).json({error: e.message});
             });
-        if (suggestedUsers) {
+        if ((suggestedUsers as UserModel[]).length) {
             res.status(200).json({limit, users: suggestedUsers});
+        } else {
+            res.status(404).json({error: `Users with specified login substring not found`});
         }
     }
 
@@ -45,8 +44,7 @@ export class UserController {
         const userDTO = req.body;
         const user = await UserService.updateUser(userDTO)
             .catch((e) => {
-                res.status(400)
-                    .json({error: `Error occurred while updating user: ${e.message}`});
+                res.status(400).json({error: e.message});
             });
         if (user) {
             res.status(200).json({message: `User was successfully updated`, user});
@@ -59,8 +57,7 @@ export class UserController {
         const userDTO = req.body;
         const user = await UserService.addUser(userDTO)
             .catch((e) => {
-                res.status(400)
-                    .json({error: `Error occurred while creating new user: ${e.message}`});
+                res.status(400).json({error: e.message});
             });
         if (user) {
             res.status(200).json({message: 'User successfully added', user});
@@ -72,7 +69,7 @@ export class UserController {
         const {id} = req.params;
         const user = await UserService.softDeleteUser(Number(id))
             .catch((e) => {
-                res.status(400).json({error: `Error occurred while deleting user: ${e.message}`});
+                res.status(400).json({error: e.message});
             });
         if (user) {
             res.status(202).json({message: `User with id: ${id} was successfully deleted`, user});

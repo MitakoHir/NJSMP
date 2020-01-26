@@ -7,14 +7,12 @@ export class UserDAO {
         return UserModel.create({...user});
     }
 
-    public static async softDelete(id: number): Promise<UserModel> {
-        const userToDelete = await UserDAO.findById(id);
-        return userToDelete.set({isDeleted: true});
+    public static async softDelete(user: UserModel): Promise<UserModel> {
+        return user.set({isDeleted: true});
     }
 
-    public static async update(user: User): Promise<UserModel> {
-        const userToUpdate = await UserDAO.findByLogin(user.login);
-        return userToUpdate.set({...user});
+    public static async update(user: UserModel, userData: Partial<User>): Promise<UserModel> {
+        return user.set({...user, ...userData});
     }
 
     public static async findById(id: number): Promise<UserModel> {
@@ -29,6 +27,7 @@ export class UserDAO {
         loginSubstring: string,
         limit: number,
     ): Promise<UserModel[]> {
-        return UserModel.findAll({where: {id: {[Op.contains]: [loginSubstring]}}, limit});
+        return UserModel
+            .findAll({where: {login: {[Op.like]: `%${loginSubstring}%`}}, limit, order: [['login', 'ASC']]});
     }
 }
