@@ -1,11 +1,14 @@
 import { Sequelize, Error } from 'sequelize';
 import { Logger } from '@overnightjs/logger';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 class Database {
-    private host = 'localhost';
-    private database = 'njmp';
-    private username = 'postgres';
-    private password = '123456';
+    private host = process.env.DB_HOST;
+    private database = process.env.DB_NAME;
+    private username = process.env.DB_USER;
+    private password = process.env.DB_PASSWORD;
     private readonly sequelizeInst: Sequelize;
 
     constructor() {
