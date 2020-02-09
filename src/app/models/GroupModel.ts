@@ -1,45 +1,37 @@
 import DatabaseModule from '../modules/Database';
 import { Model, DataTypes } from 'sequelize';
+import { ALLOWED_PERMISSIONS, Permission } from '../types/Group';
 import { Logger } from '@overnightjs/logger';
 
 const dbCon = DatabaseModule.getConnection();
 
-export class UserModel extends Model {
+export class GroupModel extends Model {
     public id!: number;
-    public login!: string;
-    public password!: string;
-    public age!: number;
-    public isDeleted!: boolean;
+    public name!: string;
+    public permissions!: Permission[];
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
 
-UserModel.init({
+GroupModel.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    login: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    age: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    isDeleted: {
-        type: DataTypes.BOOLEAN,
+    permissions: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        values: [...ALLOWED_PERMISSIONS],
         allowNull: false,
     },
 }, {
     sequelize: dbCon,
-    modelName: 'user',
+    modelName: 'group',
 });
-UserModel.sync().then(() => Logger.Imp('Users table initialized'));
+GroupModel.sync().then(() => Logger.Imp('Groups table initialized'));
