@@ -1,87 +1,111 @@
-import { Controller, Delete, Get, Middleware, Post, Put } from '@overnightjs/core';
-import { Request, Response } from 'express';
+import { ClassErrorMiddleware, Controller, Delete, Get, Middleware, Post, Put } from '@overnightjs/core';
+import { Request, Response, NextFunction } from 'express';
 import { GroupService } from '../services/GroupService';
 import { GroupModel } from '../models/GroupModel';
 import { groupValidator } from '../validators/GroupValidators';
 import { ValidatedRequest } from 'express-joi-validation';
 import { GroupRequestScheme } from '../types/Group';
+import { errorLogger, routeLogger } from '../utils/LoggingUtils';
 
 @Controller('api/group')
+@ClassErrorMiddleware(errorLogger)
 export class GroupController {
 
     @Get(':id')
-    private async getGroupById(req: Request, res: Response) {
-        const {id} = req.params;
-        const group = await GroupService.getGroupById(Number(id))
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-            });
-        if (group) {
-            res.status(200).json({group});
-        } else {
-            res.status(404).json({error: `Group with id ${id} not found`});
+    @Middleware([routeLogger])
+    private async getGroupById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {id} = req.params;
+            const group = await GroupService.getGroupById(Number(id));
+            if (group) {
+                res.status(200).json({group});
+            } else {
+                res.status(404).json({error: `Group with id ${id} not found`});
+            }
+        } catch (e) {
+            next(e);
         }
     }
 
     @Get()
-    private async getAllGroups(req: Request, res: Response) {
-        const groups = await GroupService.getAllGroups()
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-            });
-        if ((groups as GroupModel[]).length) {
-            res.status(200).json({groups});
-        } else {
-            res.status(404).json({error: 'There is no groups yet'});
+    @Middleware([routeLogger])
+    private async getAllGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+            const groups = await GroupService.getAllGroups();
+            if ((groups as GroupModel[]).length) {
+                res.status(200).json({groups});
+            } else {
+                res.status(404).json({error: 'There is no groups yet'});
+            }
+        } catch (e) {
+            next(e);
         }
     }
 
     @Post()
-    @Middleware([groupValidator])
-    private async addGroup(req: ValidatedRequest<GroupRequestScheme>, res: Response) {
-        const groupDTO = req.body;
-        const group = await GroupService.addGroup(groupDTO)
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-            });
-        if (group) {
-            res.status(200).json({message: 'Group successfully added', group});
+    @Middleware([routeLogger, groupValidator])
+    private async addGroup(
+        req: ValidatedRequest<GroupRequestScheme>,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const groupDTO = req.body;
+            const group = await GroupService.addGroup(groupDTO);
+            if (group) {
+                res.status(200).json({message: 'Group successfully added', group});
+            }
+        } catch (e) {
+            next(e);
         }
     }
 
     @Put()
-    @Middleware([groupValidator])
-    private async updateGroup(req: ValidatedRequest<GroupRequestScheme>, res: Response) {
-        const groupDTO = req.body;
-        const group = await GroupService.updateGroup(groupDTO)
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-            });
-        if (group) {
-            res.status(200).json({message: `Group was successfully updated`, group});
+    @Middleware([routeLogger, groupValidator])
+    private async updateGroup(
+        req: ValidatedRequest<GroupRequestScheme>,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const groupDTO = req.body;
+            const group = await GroupService.updateGroup(groupDTO);
+            if (group) {
+                res.status(200).json({message: `Group was successfully updated`, group});
+            }
+        } catch (e) {
+            next(e);
         }
     }
 
     @Delete(':id')
-    private async removeUser(req: Request, res: Response) {
-        const {id} = req.params;
-        const groupId = await GroupService.deleteGroup(Number(id))
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-            });
-        if (groupId) {
-            res.status(200).json({message: `Group with id ${id} was successfully deleted`});
+    @Middleware([routeLogger])
+    private async removeUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {id} = req.params;
+            const groupId = await GroupService.deleteGroup(Number(id));
+            if (groupId) {
+                res.status(200).json({message: `Group with id ${id} was successfully deleted`});
+            }
+        } catch (e) {
+            next(e);
         }
     }
+
     @Post('addUsersToGroup')
-    private async addUsersToGroup(req: Request, res: Response) {
-        const {userIds, groupId} = req.body;
-        const userGroupRecord = await GroupService.addUsersToGroup(userIds, groupId)
-            .catch((e) => {
-                res.status(400).json({error: e.message});
-        });
-        if (userGroupRecord) {
-            res.status(200).json({message: 'User successfully added to group', userGroupRecord});
+    @Middleware([routeLogger])
+    private async addUsersToGroup(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {userIds, groupId} = req.body;
+            const userGroupRecord = await GroupService.addUsersToGroup(userIds, groupId);
+            if (userGroupRecord) {
+                res.status(200).json({
+                    message: 'User successfully added to group',
+                    userGroupRecord,
+                });
+            }
+        } catch (e) {
+            next(e);
         }
     }
 }
