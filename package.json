@@ -30,6 +30,7 @@
     "@overnightjs/logger": "^1.1.9",
     "body-parser": "^1.19.0",
     "csvtojson": "^2.0.10",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.3",
     "pg": "^7.17.1",

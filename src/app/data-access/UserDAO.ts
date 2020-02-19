@@ -1,6 +1,7 @@
 import { UserModel } from '../models/UserModel';
 import { User } from '../types/User';
 import { Op } from 'sequelize';
+import { GroupModel } from '../models/GroupModel';
 
 export class UserDAO {
     public static async create(user: User): Promise<UserModel> {
@@ -12,11 +13,19 @@ export class UserDAO {
     }
 
     public static async update(user: UserModel, userData: Partial<User>): Promise<UserModel> {
-        return user.set({...user, ...userData});
+        return user.update({...user, ...userData});
     }
 
     public static async findById(id: number): Promise<UserModel> {
-        return UserModel.findByPk(id);
+        return UserModel.findByPk(id, {
+            include: [{
+                model: GroupModel,
+                as: 'groups',
+                required: false,
+                attributes: ['id', 'name', 'permissions'],
+                through: {attributes: []},
+            }],
+        });
     }
 
     public static async findByLogin(login: string): Promise<UserModel> {
