@@ -2,17 +2,17 @@ import { ClassErrorMiddleware, Controller, Delete, Get, Middleware, Post, Put } 
 import { Request, Response, NextFunction } from 'express';
 import { GroupService } from '../services/GroupService';
 import { GroupModel } from '../models/GroupModel';
-import { groupValidator } from '../validators/GroupValidators';
+import { groupValidator } from '../middleware/validators/GroupValidators';
 import { ValidatedRequest } from 'express-joi-validation';
 import { GroupRequestScheme } from '../types/Group';
-import { errorLogger, routeLogger } from '../utils/LoggingUtils';
+import { controllerError, routeDebug } from '../middleware/loggers/Controller';
 
 @Controller('api/group')
-@ClassErrorMiddleware(errorLogger)
+@ClassErrorMiddleware(controllerError)
 export class GroupController {
 
     @Get(':id')
-    @Middleware([routeLogger])
+    @Middleware([routeDebug])
     private async getGroupById(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
@@ -28,7 +28,7 @@ export class GroupController {
     }
 
     @Get()
-    @Middleware([routeLogger])
+    @Middleware([routeDebug])
     private async getAllGroups(req: Request, res: Response, next: NextFunction) {
         try {
             const groups = await GroupService.getAllGroups();
@@ -43,7 +43,7 @@ export class GroupController {
     }
 
     @Post()
-    @Middleware([routeLogger, groupValidator])
+    @Middleware([routeDebug, groupValidator])
     private async addGroup(
         req: ValidatedRequest<GroupRequestScheme>,
         res: Response,
@@ -61,7 +61,7 @@ export class GroupController {
     }
 
     @Put()
-    @Middleware([routeLogger, groupValidator])
+    @Middleware([routeDebug, groupValidator])
     private async updateGroup(
         req: ValidatedRequest<GroupRequestScheme>,
         res: Response,
@@ -79,13 +79,15 @@ export class GroupController {
     }
 
     @Delete(':id')
-    @Middleware([routeLogger])
+    @Middleware([routeDebug])
     private async removeUser(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
             const groupId = await GroupService.deleteGroup(Number(id));
             if (groupId) {
                 res.status(200).json({message: `Group with id ${id} was successfully deleted`});
+            } else {
+                res.status(404).json({message: `Group with id ${id} was not found`});
             }
         } catch (e) {
             next(e);
@@ -93,7 +95,7 @@ export class GroupController {
     }
 
     @Post('addUsersToGroup')
-    @Middleware([routeLogger])
+    @Middleware([routeDebug])
     private async addUsersToGroup(req: Request, res: Response, next: NextFunction) {
         try {
             const {userIds, groupId} = req.body;
