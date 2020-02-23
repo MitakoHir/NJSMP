@@ -1,5 +1,5 @@
 import ExpressServer from './server';
-import { uncaughtExceptionLogger } from './utils/Loggers';
+import { uncaughtExceptionLogger, uncaughtRejectionLogger } from './utils/Loggers';
 
 process.on('uncaughtException', (err) => {
     uncaughtExceptionLogger.error('There is uncaught exception inside application',
@@ -12,7 +12,7 @@ process.on('unhandledRejection', (reason) => {
         ? {errorMessage: reason.message, errorStacktrace: reason.stack}
         : reason;
     // Hack due to the issue in winston library https://github.com/winstonjs/winston/issues/1498
-    uncaughtExceptionLogger.error(
+    uncaughtRejectionLogger.error(
         'There is unhandled promise rejection inside application',
         {...reasonObj},
     );

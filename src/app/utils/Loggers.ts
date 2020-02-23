@@ -47,3 +47,13 @@ export const routeDebugLogger = winston.createLogger({
             .Console({format: winston.format.json()}),
     ],
 });
+
+export const serviceErrorLogger = winston.createLogger({
+    level: 'error',
+    format: winston.format.json(),
+    defaultMeta: {service: 'Service logger'},
+    transports: [
+        new winston
+            .transports.Console({format: winston.format.json()}),
+    ],
+});
