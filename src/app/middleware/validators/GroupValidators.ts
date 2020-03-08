@@ -1,6 +1,6 @@
 import { createValidator } from 'express-joi-validation';
 import * as Joi from '@hapi/joi';
-import { ALLOWED_PERMISSIONS } from '../types/Group';
+import { ALLOWED_PERMISSIONS } from '../../types/Group';
 
 
 const groupScheme = Joi.object({

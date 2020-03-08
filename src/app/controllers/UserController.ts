@@ -1,26 +1,27 @@
 import { Request, Response, NextFunction } from 'express';
 import {
-    Controller,
     Get,
     Put,
     Post,
     Delete,
     Middleware,
+    Controller,
     ClassErrorMiddleware,
 } from '@overnightjs/core';
 import { UserService } from '../services/UserService';
-import { userValidator } from '../validators/UserValidators';
+import { userValidator } from '../middleware/validators/UserValidators';
 import { ValidatedRequest } from 'express-joi-validation';
 import { UserRequestScheme } from '../types/User';
 import { UserModel } from '../models/UserModel';
-import { ErrorLogger } from '../utils/LoggingUtils';
+import { controllerError, routeDebug } from '../middleware/loggers/Controller';
 
 
 @Controller('api/user')
-@ClassErrorMiddleware(ErrorLogger)
+@ClassErrorMiddleware(controllerError)
 export class UserController {
 
     @Get(':id')
+    @Middleware([routeDebug])
     private async getUserById(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
@@ -36,6 +37,7 @@ export class UserController {
     }
 
     @Get('suggestions/:loginSubstring/:limit')
+    @Middleware([routeDebug])
     private async getSuggestedUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const {loginSubstring, limit} = req.params;
@@ -52,7 +54,7 @@ export class UserController {
     }
 
     @Put()
-    @Middleware([userValidator])
+    @Middleware([routeDebug, userValidator])
     private async updateUser(
         req: ValidatedRequest<UserRequestScheme>,
         res: Response,
@@ -70,7 +72,7 @@ export class UserController {
     }
 
     @Post()
-    @Middleware([userValidator])
+    @Middleware([routeDebug, userValidator])
     private async addUser(
         req: ValidatedRequest<UserRequestScheme>,
         res: Response,
@@ -88,6 +90,7 @@ export class UserController {
     }
 
     @Delete(':id')
+    @Middleware([routeDebug])
     private async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
