@@ -10,7 +10,7 @@ interface Payload {
 export async function Auth(req: Request, res: Response, next: NextFunction) {
     let token = req.header('Authorization');
     if (!token) {
-        res.status(401).json('No token provided');
+        res.status(401).json({ message: 'No token provided'});
     }
     token = token.replace('Bearer ', '');
     try {

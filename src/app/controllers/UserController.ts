@@ -39,7 +39,7 @@ export class UserController {
     }
 
     @Get('suggestions/:loginSubstring/:limit')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async getSuggestedUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const {loginSubstring, limit} = req.params;
@@ -58,7 +58,7 @@ export class UserController {
     }
 
     @Put()
-    @Middleware([routeDebug, userValidator])
+    @Middleware([routeDebug, userValidator, Auth])
     private async updateUser(
         req: ValidatedRequest<UserRequestScheme>,
         res: Response,
@@ -106,7 +106,7 @@ export class UserController {
     }
 
     @Delete(':id')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;

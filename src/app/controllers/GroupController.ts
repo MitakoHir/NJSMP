@@ -6,13 +6,14 @@ import { groupValidator } from '../middleware/validators/GroupValidators';
 import { ValidatedRequest } from 'express-joi-validation';
 import { GroupRequestScheme } from '../types/Group';
 import { controllerError, routeDebug } from '../middleware/loggers/Controller';
+import { Auth } from '../middleware/auth/Auth';
 
 @Controller('api/group')
 @ClassErrorMiddleware(controllerError)
 export class GroupController {
 
     @Get(':id')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async getGroupById(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
@@ -28,7 +29,7 @@ export class GroupController {
     }
 
     @Get()
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async getAllGroups(req: Request, res: Response, next: NextFunction) {
         try {
             const groups = await GroupService.getAllGroups();
@@ -43,7 +44,7 @@ export class GroupController {
     }
 
     @Post()
-    @Middleware([routeDebug, groupValidator])
+    @Middleware([routeDebug, groupValidator, Auth])
     private async addGroup(
         req: ValidatedRequest<GroupRequestScheme>,
         res: Response,
@@ -61,7 +62,7 @@ export class GroupController {
     }
 
     @Put()
-    @Middleware([routeDebug, groupValidator])
+    @Middleware([routeDebug, groupValidator, Auth])
     private async updateGroup(
         req: ValidatedRequest<GroupRequestScheme>,
         res: Response,
@@ -79,7 +80,7 @@ export class GroupController {
     }
 
     @Delete(':id')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async removeUser(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
@@ -95,7 +96,7 @@ export class GroupController {
     }
 
     @Post('addUsersToGroup')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async addUsersToGroup(req: Request, res: Response, next: NextFunction) {
         try {
             const {userIds, groupId} = req.body;
