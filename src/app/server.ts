@@ -4,8 +4,13 @@ import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import DatabaseModule from './modules/Database';
-
+import cors from 'cors';
 class ExpressServer extends Server {
+
+    private corsOptions: cors.CorsOptions = {
+        methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+        origin: '*',
+    };
 
     private readonly SERVER_STARTED = 'Express server started on port: ';
 
@@ -13,6 +18,7 @@ class ExpressServer extends Server {
         super(true);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use(cors(this.corsOptions));
         this.setupControllers();
     }
 
