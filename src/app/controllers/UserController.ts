@@ -14,6 +14,8 @@ import { ValidatedRequest } from 'express-joi-validation';
 import { UserRequestScheme } from '../types/User';
 import { UserModel } from '../models/UserModel';
 import { controllerError, routeDebug } from '../middleware/loggers/Controller';
+import { Logger } from '@overnightjs/logger';
+import { Auth } from '../middleware/auth/Auth';
 
 
 @Controller('api/user')
@@ -21,7 +23,7 @@ import { controllerError, routeDebug } from '../middleware/loggers/Controller';
 export class UserController {
 
     @Get(':id')
-    @Middleware([routeDebug])
+    @Middleware([routeDebug, Auth])
     private async getUserById(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
@@ -43,7 +45,9 @@ export class UserController {
             const {loginSubstring, limit} = req.params;
             const suggestedUsers = await UserService
                 .getAutoSuggestUsers(loginSubstring, Number(limit));
-            if ((suggestedUsers as UserModel[]).length) {
+            Logger.Imp(await UserService
+                .getAutoSuggestUsers('test', 5));
+            if (suggestedUsers && (suggestedUsers as UserModel[]).length) {
                 res.status(200).json({limit, users: suggestedUsers});
             } else {
                 res.status(404).json({error: `Users with specified login substring not found`});
@@ -81,9 +85,21 @@ export class UserController {
         try {
             const userDTO = req.body;
             const user = await UserService.addUser(userDTO);
+            Logger.Imp(user);
             if (user) {
                 res.status(200).json({message: 'User successfully added', user});
             }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    @Post('login')
+    private async login(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {login, password} = req.body;
+            const userRecord = await UserService.loginUser(login, password);
+            res.status(200).json({user: userRecord, token: (userRecord as UserModel).token});
         } catch (e) {
             next(e);
         }
