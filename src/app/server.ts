@@ -5,6 +5,7 @@ import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import DatabaseModule from './modules/Database';
 import cors from 'cors';
+
 class ExpressServer extends Server {
 
     private corsOptions: cors.CorsOptions = {
