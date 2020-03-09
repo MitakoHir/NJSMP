@@ -44,7 +44,7 @@ export class UserService {
             const token = jwt.sign(
                 {login, password},
                 process.env.SECRET_KEY,
-                {expiresIn: 60 },
+                {expiresIn: 60 * 60},
             );
             return UserDAO.update(userRecord, {token});
         } else {

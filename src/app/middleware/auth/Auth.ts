@@ -21,6 +21,10 @@ export async function Auth(req: Request, res: Response, next: NextFunction) {
         }
         next();
     } catch (e) {
-        res.status(403).json(e);
+        res.status(403).json({
+            name: e.name,
+            message: e.message,
+            expiredAt: e.expiredAt,
+        });
     }
 }
