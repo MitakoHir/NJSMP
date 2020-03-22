@@ -9,18 +9,21 @@ const predefinedUsers: User[] = [
         password: '123456a',
         age: 22,
         isDeleted: false,
+        token: '1',
     },
     {
         login: 'testUser1',
         password: '123456b',
         age: 24,
         isDeleted: false,
+        token: '2',
     },
     {
         login: 'testUser3',
         password: '123456c',
         age: 26,
         isDeleted: false,
+        token: '3',
     },
 ];
 

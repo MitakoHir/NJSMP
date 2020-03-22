@@ -13,7 +13,9 @@
     "emitDecoratorMetadata": true,
     "importHelpers": true,
     "types": [
-      "node"
+      "node",
+      "jest",
+      "supertest"
     ],
     "typeRoots": [
       "node_modules/@types"
@@ -26,5 +28,8 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*spec.ts"
   ]
 }
