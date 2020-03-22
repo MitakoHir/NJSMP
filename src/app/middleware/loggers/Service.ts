@@ -5,7 +5,7 @@ export function ServiceMethodLogger() {
         const originalMethod = descriptor.value;
         descriptor.value = async (...args: any) => {
             try {
-                await originalMethod.apply(this, args);
+                return await originalMethod.apply(this, args);
             } catch (e) {
                 serviceErrorLogger.error('There is an error in service layer',
                     {

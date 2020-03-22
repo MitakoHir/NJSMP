@@ -5,6 +5,7 @@ export interface UserData {
     login: string;
     password: string;
     age: number;
+    token: string;
 }
 export interface User extends UserData {
     isDeleted: boolean;

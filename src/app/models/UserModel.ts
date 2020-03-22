@@ -10,6 +10,7 @@ export class UserModel extends Model {
     public password!: string;
     public age!: number;
     public isDeleted!: boolean;
+    public token!: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -37,6 +38,10 @@ UserModel.init({
     isDeleted: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+    },
+    token: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
 }, {
     sequelize: dbCon,
