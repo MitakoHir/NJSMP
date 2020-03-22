@@ -45,8 +45,6 @@ export class UserController {
             const {loginSubstring, limit} = req.params;
             const suggestedUsers = await UserService
                 .getAutoSuggestUsers(loginSubstring, Number(limit));
-            Logger.Imp(await UserService
-                .getAutoSuggestUsers('test', 5));
             if (suggestedUsers && (suggestedUsers as UserModel[]).length) {
                 res.status(200).json({limit, users: suggestedUsers});
             } else {
@@ -68,7 +66,7 @@ export class UserController {
             const userDTO = req.body;
             const user = await UserService.updateUser(userDTO);
             if (user) {
-                res.status(200).json({message: `User was successfully updated`, user});
+               return  res.status(200).json({message: `User was successfully updated`, user});
             }
         } catch (e) {
             next(e);
