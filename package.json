@@ -8,21 +8,29 @@
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "prestart": "yarn build && node ./dist/utils/UsersGenerator.js",
+    "prestart": "yarn build",
     "start": "node .",
-    "start-dev": "nodemon --config \"./nodemon.json\"/"
+    "start-dev": "nodemon --config \"./nodemon.json\"/",
+    "test": "jest --detectOpenHandles --colors",
+    "createTables": "node ./dist/utils/UsersGenerator.js"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.29",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
     "@types/hapi__joi": "^16.0.4",
+    "@types/jest": "^25.1.4",
     "@types/jsonwebtoken": "^8.3.8",
     "@types/node": "^12.12.21",
+    "@types/supertest": "^2.0.8",
     "@types/uuid": "^3.4.6",
     "@types/validator": "^12.0.1",
     "@types/winston": "^2.4.4",
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0",
     "nodemon": "^2.0.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.2.1",
     "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "typescript": "^3.7.3"
@@ -43,5 +51,21 @@
     "sequelize": "^5.21.3",
     "uuid": "^3.3.3",
     "winston": "^3.2.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts"
+    ],
+    "testMatch": [
+      "**/*spec.+(ts|tsx)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    }
   }
 }

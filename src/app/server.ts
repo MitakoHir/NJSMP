@@ -43,6 +43,13 @@ class ExpressServer extends Server {
         });
         DatabaseModule.testConnection();
     }
-}
 
-export default ExpressServer;
+    /**
+     * @remark for testing purposes only
+     */
+    public getApp() {
+        return this.app;
+    }
+}
+const exampleServer = new ExpressServer();
+export default exampleServer;

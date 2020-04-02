@@ -1,6 +1,5 @@
 import DatabaseModule from '../modules/Database';
 import { Model, DataTypes } from 'sequelize';
-import { Logger } from '@overnightjs/logger';
 
 const dbCon = DatabaseModule.getConnection();
 
@@ -47,4 +46,4 @@ UserModel.init({
     sequelize: dbCon,
     modelName: 'user',
 });
-UserModel.sync().then(() => Logger.Imp('Users table initialized'));
+UserModel.sync().then();

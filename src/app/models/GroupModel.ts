@@ -1,7 +1,6 @@
 import DatabaseModule from '../modules/Database';
 import { Model, DataTypes } from 'sequelize';
 import { ALLOWED_PERMISSIONS, Permission } from '../types/Group';
-import { Logger } from '@overnightjs/logger';
 
 const dbCon = DatabaseModule.getConnection();
 
@@ -34,4 +33,4 @@ GroupModel.init({
     sequelize: dbCon,
     modelName: 'group',
 });
-GroupModel.sync().then(() => Logger.Imp('Groups table initialized'));
+GroupModel.sync().then();

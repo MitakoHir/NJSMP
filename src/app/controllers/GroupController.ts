@@ -54,7 +54,7 @@ export class GroupController {
             const groupDTO = req.body;
             const group = await GroupService.addGroup(groupDTO);
             if (group) {
-                res.status(200).json({message: 'Group successfully added', group});
+                return res.status(200).json({message: 'Group successfully added', group});
             }
         } catch (e) {
             next(e);
@@ -72,7 +72,7 @@ export class GroupController {
             const groupDTO = req.body;
             const group = await GroupService.updateGroup(groupDTO);
             if (group) {
-                res.status(200).json({message: `Group was successfully updated`, group});
+                return res.status(200).json({message: `Group was successfully updated`, group});
             }
         } catch (e) {
             next(e);

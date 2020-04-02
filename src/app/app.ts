@@ -1,5 +1,5 @@
-import ExpressServer from './server';
 import { uncaughtExceptionLogger, uncaughtRejectionLogger } from './utils/Loggers';
+import exampleServer from './server';
 
 process.on('uncaughtException', (err) => {
     uncaughtExceptionLogger.error('There is uncaught exception inside application',
@@ -18,5 +18,6 @@ process.on('unhandledRejection', (reason) => {
     );
 });
 
-const exampleServer = new ExpressServer();
-exampleServer.start(3000);
+
+const server = exampleServer.start(3000);
+export default server;

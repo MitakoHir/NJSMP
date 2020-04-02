@@ -15,6 +15,7 @@ class Database {
         this.sequelizeInst = new Sequelize(this.database, this.username, this.password, {
             host: this.host,
             dialect: 'postgres',
+            logging: false,
         });
     }
 
